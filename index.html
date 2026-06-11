@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Teo Moldovanu — Senior Technical Writer specializing in cloud and security. Documentation built with engineering rigor.">
+  <title>Teo Moldovanu · Senior Technical Writer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:        #090c11;
+      --bg-1:      #0d1118;
+      --bg-2:      #11161f;
+      --bg-card:   #0f1520;
+      --border:    #1a2333;
+      --border-hi: #273447;
+      --text:      #dde5ed;
+      --muted:     #697c94;
+      --dim:       #334455;
+      --accent:    #f0a500;
+      --accent-lo: rgba(240,165,0,.10);
+      --accent-md: rgba(240,165,0,.20);
+      --mono:      'JetBrains Mono', 'Courier New', monospace;
+      --sans:      'Inter', system-ui, sans-serif;
+      --r:         6px;
+      --w:         1100px;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans);
+           line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    ::selection { background: var(--accent-lo); color: var(--accent); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; inset-inline: 0; z-index: 100;
+      height: 58px; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(9,12,17,.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono); font-size: .85rem; font-weight: 700;
+      color: var(--accent); text-decoration: none; letter-spacing: -.02em;
+    }
+    .nav-logo em { color: var(--muted); font-style: normal; font-weight: 300; }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono); font-size: .72rem; color: var(--muted);
+      text-decoration: none; letter-spacing: .06em;
+      transition: color .18s;
+    }
+    .nav-links a::before { content: '// '; color: var(--dim); transition: color .18s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-links a:hover::before, .nav-links a.active::before { color: var(--accent); }
+    .nav-cta {
+      font-family: var(--mono); font-size: .72rem;
+      color: var(--accent); border: 1px solid var(--accent);
+      padding: .35rem .9rem; border-radius: var(--r);
+      text-decoration: none; letter-spacing: .04em;
+      transition: background .18s;
+    }
+    .nav-cta:hover { background: var(--accent-lo); }
+    .hamburger {
+      display: none; background: none; border: none;
+      color: var(--muted); cursor: pointer; padding: .2rem;
+    }
+
+    /* ── MOBILE NAV ── */
+    .mob-nav {
+      display: none; position: fixed; top: 58px; inset-inline: 0; z-index: 99;
+      background: rgba(9,12,17,.97); border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+    }
+    .mob-nav.open { display: block; }
+    .mob-nav a {
+      display: block; font-family: var(--mono); font-size: .85rem;
+      color: var(--muted); text-decoration: none;
+      padding: .7rem 0; border-bottom: 1px solid var(--border);
+      transition: color .18s;
+    }
+    .mob-nav a:last-child { border: none; }
+    .mob-nav a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 9rem 2rem 5rem; position: relative; overflow: hidden;
+    }
+    /* Grid pattern */
+    #hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity: .28;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 10%, transparent 75%);
+    }
+    /* Amber glow top */
+    #hero::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 40% at 50% -5%, rgba(240,165,0,.07) 0%, transparent 65%);
+    }
+    .hero-inner {
+      max-width: var(--w); margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 4rem; align-items: center; position: relative; z-index: 1;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono); font-size: .7rem;
+      color: var(--accent); letter-spacing: .12em; text-transform: uppercase;
+      display: flex; align-items: center; gap: .7rem; margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 28px; height: 1px; background: var(--accent);
+    }
+    h1.hero-name {
+      font-family: var(--mono); font-weight: 700; letter-spacing: -.035em;
+      font-size: clamp(2.6rem, 5.5vw, 5rem); line-height: 1.02;
+      color: var(--text); margin-bottom: .3rem;
+    }
+    .hero-title {
+      font-family: var(--mono); font-weight: 400; letter-spacing: -.01em;
+      font-size: clamp(1rem, 2vw, 1.45rem); color: var(--accent);
+      margin-bottom: 2rem;
+    }
+    .hero-statement {
+      font-size: clamp(.95rem, 1.6vw, 1.1rem); color: var(--muted);
+      max-width: 540px; line-height: 1.8; margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+    .hero-statement strong { color: var(--text); font-weight: 500; }
+    .hero-links { display: flex; gap: .85rem; flex-wrap: wrap; }
+    .hero-link {
+      font-family: var(--mono); font-size: .75rem; color: var(--muted);
+      text-decoration: none; border: 1px solid var(--border-hi);
+      padding: .55rem 1.1rem; border-radius: var(--r);
+      display: flex; align-items: center; gap: .45rem;
+      transition: all .18s;
+    }
+    .hero-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lo); }
+    .hero-link svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+    /* Terminal block in hero */
+    .hero-terminal {
+      background: var(--bg-card); border: 1px solid var(--border-hi);
+      border-radius: var(--r); overflow: hidden; min-width: 280px;
+      box-shadow: 0 0 40px rgba(240,165,0,.06);
+    }
+    .terminal-bar {
+      background: var(--bg-2); padding: .6rem .9rem;
+      display: flex; align-items: center; gap: .4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .t-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--border-hi);
+    }
+    .t-filename {
+      font-family: var(--mono); font-size: .68rem; color: var(--muted);
+      margin-left: .4rem;
+    }
+    .terminal-body {
+      padding: 1.2rem 1.4rem;
+      font-family: var(--mono); font-size: .78rem; line-height: 1.9;
+    }
+    .t-key { color: var(--accent); }
+    .t-val { color: #7ec8e3; }
+    .t-str { color: #98c379; }
+    .t-bool { color: #d19a66; }
+    .t-comment { color: var(--dim); }
+    .t-arr { color: var(--muted); }
+    .t-cursor {
+      display: inline-block; width: 8px; height: .85em;
+      background: var(--accent); vertical-align: text-bottom;
+      animation: blink .9s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* Scroll indicator */
+    .scroll-cue {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      font-family: var(--mono); font-size: .62rem; color: var(--dim);
+      letter-spacing: .1em; animation: breathe 2.5s ease-in-out infinite;
+    }
+    .scroll-cue::after {
+      content: ''; display: block; width: 1px; height: 36px;
+      background: linear-gradient(to bottom, var(--dim), transparent);
+    }
+    @keyframes breathe { 0%,100%{opacity:.4} 50%{opacity:.9} }
+
+    /* ── SHARED SECTION STYLES ── */
+    section { padding: 6rem 2rem; }
+    .inner { max-width: var(--w); margin: 0 auto; }
+    .s-label {
+      font-family: var(--mono); font-size: .68rem; color: var(--accent);
+      letter-spacing: .12em; text-transform: uppercase;
+      display: flex; align-items: center; gap: .5rem;
+      margin-bottom: .75rem;
+    }
+    .s-label::before {
+      font-family: var(--mono); font-size: .6rem;
+      color: var(--dim); content: attr(data-n);
+    }
+    .s-title {
+      font-family: var(--mono); font-weight: 600; letter-spacing: -.02em;
+      font-size: clamp(1.5rem, 2.8vw, 2.25rem); color: var(--text);
+      margin-bottom: .9rem;
+    }
+    .s-sub {
+      font-size: 1rem; color: var(--muted); max-width: 580px;
+      line-height: 1.72; margin-bottom: 3rem; font-weight: 300;
+    }
+
+    /* ── SCOPE TAGS (what-card 01) ── */
+    .scope-label {
+      font-family: var(--mono); font-size: .6rem; color: var(--accent);
+      letter-spacing: .1em; text-transform: uppercase;
+      margin: .9rem 0 .35rem;
+    }
+    .scope-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .5rem; }
+    .scope-tag {
+      font-family: var(--mono); font-size: .65rem; color: var(--muted);
+      background: var(--bg-2); border: 1px solid var(--border);
+      padding: .18rem .5rem; border-radius: 3px;
+      transition: all .18s; cursor: default;
+    }
+    .scope-tag:hover {
+      border-color: var(--accent); color: var(--accent);
+      background: var(--accent-lo);
+    }
+    a.scope-tag {
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* ── EXPANDABLE METRICS ── */
+    .metric-list { margin-top: .9rem; display: flex; flex-direction: column; gap: .3rem; }
+    .metric-item { display: flex; gap: .6rem; align-items: flex-start; }
+    .metric-marker {
+      font-family: var(--mono); font-size: .75rem; color: var(--accent);
+      flex-shrink: 0; margin-top: .18rem; opacity: .7;
+    }
+    details.metric { flex: 1; }
+    details.metric summary {
+      font-family: var(--mono); font-size: .75rem; color: var(--accent);
+      cursor: pointer; list-style: none;
+      display: flex; justify-content: flex-start; align-items: center;
+      gap: .5rem; user-select: none;
+    }
+    details.metric summary::-webkit-details-marker { display: none; }
+    details.metric summary::before {
+      content: '›'; font-size: .9rem; flex-shrink: 0;
+      transition: transform .2s ease;
+    }
+    details.metric[open] summary::before { transform: rotate(90deg); }
+    details.metric .metric-detail {
+      font-size: .8rem; color: var(--muted);
+      line-height: 1.6; padding: .35rem 0 .1rem;
+    }
+
+    /* ── KEY CONTRIBUTIONS ── */
+    .contrib-wrap {
+      border-top: 1px solid var(--border);
+      padding-top: 2.5rem; margin-top: 2rem;
+    }
+    .contrib-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .75rem 4rem; margin-top: 1rem;
+    }
+    .contrib-item { display: flex; gap: .6rem; align-items: baseline; }
+    .contrib-marker {
+      font-family: var(--mono); font-size: .6rem; color: var(--accent);
+      flex-shrink: 0; opacity: .65;
+    }
+    .contrib-text { font-size: .875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── WHAT I DO ── */
+    #what { background: var(--bg-1); border-block: 1px solid var(--border); }
+    .what-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border); border-radius: var(--r); overflow: hidden;
+      gap: 1px; background: var(--border); margin-top: 3rem;
+    }
+    .what-card {
+      background: var(--bg-card); padding: 2rem 1.75rem;
+      transition: background .2s;
+    }
+    .what-card:hover { background: var(--bg-2); }
+    .what-num {
+      font-family: var(--mono); font-size: .7rem; color: var(--accent);
+      margin-bottom: 1.1rem; letter-spacing: .06em;
+    }
+    .what-title {
+      font-family: var(--mono); font-size: .82rem; font-weight: 600;
+      color: var(--text); margin-bottom: .65rem; line-height: 1.4;
+    }
+    .what-body { font-size: .88rem; color: var(--muted); line-height: 1.68; }
+
+    /* ── CASE STUDIES ── */
+    #work { background: var(--bg); }
+    .case-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin-top: 3rem; align-items: start;
+    }
+    .case-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 2rem 1.75rem;
+      position: relative; overflow: hidden;
+      transition: border-color .22s, transform .22s;
+    }
+    .case-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 0; background: var(--accent);
+      transition: height .3s ease;
+    }
+    .case-card:hover { border-color: var(--border-hi); transform: translateY(-3px); }
+    .case-card:hover::before { height: 100%; }
+    .case-n {
+      font-family: var(--mono); font-size: .65rem; color: var(--dim);
+      letter-spacing: .1em; margin-bottom: 1rem;
+    }
+    .case-title {
+      font-family: var(--mono); font-size: .92rem; font-weight: 600;
+      color: var(--text); line-height: 1.35; margin-bottom: .9rem;
+    }
+    .case-tag {
+      display: inline-flex; align-items: center;
+      font-family: var(--mono); font-size: .62rem; color: var(--accent);
+      background: var(--accent-lo); border: 1px solid var(--accent-md);
+      padding: .2rem .55rem; border-radius: 3px;
+      letter-spacing: .05em; margin-bottom: 1.25rem; width: fit-content;
+    }
+    .case-problem {
+      font-size: .875rem; color: var(--muted); line-height: 1.68;
+      margin-bottom: 1.25rem; flex: 1;
+    }
+    .case-problem strong { color: var(--text); font-weight: 500; }
+    .case-complexity { padding-top: 0; }
+    .case-clabel {
+      font-family: var(--mono); font-size: .62rem; color: var(--dim);
+      letter-spacing: .1em; text-transform: uppercase; margin-bottom: .45rem;
+    }
+    .case-ctext { font-size: .875rem; color: var(--muted); line-height: 1.65; }
+    .what-body a, .case-ctext a, .contrib-text a, .metric-detail a {
+      color: rgba(240,165,0,.65);
+      text-decoration: underline;
+      text-decoration-color: rgba(240,165,0,.3);
+      transition: color .18s, text-decoration-color .18s;
+    }
+    .what-body a:visited, .case-ctext a:visited, .contrib-text a:visited, .metric-detail a:visited {
+      color: rgba(240,165,0,.45);
+      text-decoration-color: rgba(240,165,0,.2);
+    }
+    .what-body a:hover, .case-ctext a:hover, .contrib-text a:hover, .metric-detail a:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+
+    /* ── PROCESS ── */
+    #process { background: var(--bg-1); border-block: 1px solid var(--border); }
+    .process-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      grid-auto-flow: column;
+      gap: 2.5rem 4rem; margin-top: 3rem;
+    }
+    .process-item { display: flex; gap: 1.1rem; }
+    .process-n {
+      font-family: var(--mono); font-size: .68rem; color: var(--accent);
+      flex-shrink: 0; margin-top: .1rem; width: 2.2rem;
+    }
+    .process-title {
+      font-family: var(--mono); font-size: .85rem; font-weight: 600;
+      color: var(--text); margin-bottom: .45rem;
+    }
+    .process-body { font-size: .88rem; color: var(--muted); line-height: 1.68; }
+
+    /* ── TOOLS ── */
+    #tools { background: var(--bg); }
+    .tools-wrap { margin-top: 3rem; }
+    .tool-group { margin-bottom: 1.75rem; }
+    .tool-group-label {
+      font-family: var(--mono); font-size: .63rem; color: var(--dim);
+      letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem;
+    }
+    .tool-group-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .tool-tags { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .tool-tag {
+      font-family: var(--mono); font-size: .78rem; color: var(--muted);
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: .45rem .95rem; border-radius: var(--r);
+      display: flex; align-items: center; gap: .45rem;
+      transition: all .18s; cursor: default;
+    }
+    .tool-tag::before { content: '>'; color: var(--dim); transition: color .18s; }
+    .tool-tag:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lo); }
+    .tool-tag:hover::before { color: var(--accent); }
+
+    /* ── RECOMMENDATIONS ── */
+    #recs { background: var(--bg-1); border-top: 1px solid var(--border); }
+    .rec-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin-top: 3rem;
+    }
+    .rec-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 1.75rem;
+      position: relative; transition: border-color .2s;
+    }
+    .rec-card:hover { border-color: var(--border-hi); }
+    .rec-card:first-child,
+    .rec-card:nth-child(2) { grid-row: span 1; }
+    .rec-q {
+      font-family: var(--mono); font-size: 2.6rem; line-height: .75;
+      color: var(--accent); opacity: .45; margin-bottom: .85rem; display: block;
+    }
+    .rec-text {
+      font-size: .9rem; color: var(--text); line-height: 1.78;
+      margin-bottom: 1.4rem; font-style: italic; font-weight: 300;
+    }
+    .rec-divider { width: 24px; height: 2px; background: var(--accent); margin-bottom: 1rem; opacity: .6; }
+    .rec-name {
+      font-family: var(--mono); font-size: .78rem; font-weight: 600; color: var(--text);
+    }
+    .rec-role {
+      font-family: var(--mono); font-size: .68rem; color: rgba(240,165,0,.55); margin-top: .2rem;
+    }
+
+    /* ── CONTACT / FOOTER ── */
+    #contact { background: var(--bg); border-top: 1px solid var(--border); padding: 6rem 2rem 3.5rem; }
+    .contact-inner { max-width: var(--w); margin: 0 auto; }
+    .contact-h {
+      font-family: var(--mono); font-weight: 600; letter-spacing: -.025em;
+      font-size: clamp(1.5rem, 3vw, 2.4rem); color: var(--text);
+      max-width: 620px; line-height: 1.28; margin-bottom: 1.2rem;
+    }
+    .contact-h span { color: var(--accent); }
+    .contact-sub {
+      font-size: 1rem; color: var(--muted); margin-bottom: 2.5rem;
+      line-height: 1.7; font-weight: 300; max-width: 500px;
+    }
+    .contact-links { display: flex; gap: .85rem; flex-wrap: wrap; margin-bottom: 5rem; }
+    .c-link {
+      font-family: var(--mono); font-size: .78rem; color: var(--muted);
+      text-decoration: none; border: 1px solid var(--border-hi);
+      padding: .6rem 1.3rem; border-radius: var(--r);
+      display: flex; align-items: center; gap: .5rem;
+      transition: all .18s;
+    }
+    .c-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lo); }
+    .c-link.primary {
+      background: var(--accent); border-color: var(--accent);
+      color: #09090c; font-weight: 600;
+    }
+    .c-link.primary:hover { background: #d99400; border-color: #d99400; color: #09090c; }
+    .c-link svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+    footer {
+      border-top: 1px solid var(--border); padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: .75rem;
+    }
+    footer p { font-family: var(--mono); font-size: .68rem; color: var(--dim); }
+    footer a { color: var(--muted); text-decoration: none; transition: color .18s; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0; transform: translateY(18px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .what-grid { grid-template-columns: repeat(2, 1fr); }
+      .case-grid { grid-template-columns: repeat(2, 1fr); }
+      .rec-grid  { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-terminal { display: none; }
+      .process-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: block; }
+      section { padding: 4rem 1.25rem; }
+      #hero { padding: 8rem 1.25rem 4rem; }
+      #contact { padding: 4rem 1.25rem 3rem; }
+      .what-grid { grid-template-columns: 1fr; }
+      .case-grid { grid-template-columns: 1fr; }
+      .rec-grid  { grid-template-columns: 1fr; }
+      .contrib-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .hero-links, .contact-links { flex-direction: column; }
+      .c-link { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">teo<em>.md</em></a>
+  <ul class="nav-links">
+    <li><a href="#what">expertise</a></li>
+    <li><a href="#work">cases</a></li>
+    <li><a href="#process">process</a></li>
+    <li><a href="#tools">tools</a></li>
+    <li><a href="#recs">voices</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">say hello →</a>
+  <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <a href="#what"    onclick="closeNav()">// expertise</a>
+  <a href="#work"    onclick="closeNav()">// cases</a>
+  <a href="#process" onclick="closeNav()">// process</a>
+  <a href="#tools"   onclick="closeNav()">// tools</a>
+  <a href="#recs"    onclick="closeNav()">// voices</a>
+  <a href="#contact" onclick="closeNav()">// say hello</a>
+</div>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Embedded in engineering. Fluent in complexity.</div>
+      <h1 class="hero-name">Teodora (Teo) Moldovanu</h1>
+      <p class="hero-title">Senior Technical Writer · Cloud &amp; Security</p>
+      <p class="hero-statement" style="margin-bottom: 1rem;">
+        Senior Technical Writer with 6+ years at Dynatrace, where I owned documentation across <strong>cloud platforms (AWS, Azure, GCP), Kubernetes, containers, and application security</strong>.
+      </p>
+      <p class="hero-statement" style="margin-bottom: 1rem;">
+        In 2023, as the security domain grew in scope and complexity, Security leadership established a dedicated embedded writer role within the Application Security team – and brought me in to own it. That became the period of my greatest autonomy, broadest scope, and deepest impact, which is why it takes center stage in this portfolio.
+      </p>
+      <p class="hero-statement">
+        I go beyond writing – I test features early, shape in-product content, submit bugs, and influence product decisions before release.
+      </p>
+      <div class="hero-links">
+        <a href="https://www.linkedin.com/in/teo-moldovanu" class="hero-link" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/teokitten" class="hero-link" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <!-- Terminal decorative block -->
+    <div class="hero-terminal" aria-hidden="true">
+      <div class="terminal-bar">
+        <span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span>
+        <span class="t-filename">teo.yaml</span>
+      </div>
+      <div class="terminal-body">
+        <span class="t-comment"># Senior Technical Writer</span><br>
+        <br>
+        <span class="t-key">name</span>: <span class="t-str">"Teodora (Teo) Moldovanu"</span><br>
+        <span class="t-key">available</span>: <span class="t-bool">true</span><br>
+        <br>
+        <span class="t-key">domain</span>:<br>
+        <span class="t-arr">  - </span><span class="t-str" style="color: #98c379">application_security</span><br>
+        <span class="t-arr">  - </span><span class="t-str" style="color: #98c379">threat_observability</span><br>
+        <span class="t-arr">  - </span><span class="t-str" style="color: #98c379">infrastructure_observability</span><br>
+        <br>
+        <span class="t-key">approach</span>: <span class="t-str">"docs_as_product"</span><br>
+        <span class="t-key">refines_microcopy</span>: <span class="t-bool">true</span><br>
+        <span class="t-key">shapes_onboarding</span>: <span class="t-bool">true</span><br>
+        <span class="t-key">owns_qa</span>: <span class="t-bool">true</span><br>
+        <span class="t-key">files_bugs</span>: <span class="t-bool">true</span><br>
+        <span class="t-key">reads_code</span>: <span class="t-bool">true</span><br>
+        <br>
+        <span class="t-comment"># status</span><br>
+        <span class="t-key">prompt</span>: <span class="t-val">$</span> <span class="t-cursor"></span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue">scroll</div>
+</section>
+
+<!-- ── WHAT I DO ── -->
+<section id="what">
+  <div class="inner">
+    <div class="s-label reveal" data-n="01 ">expertise</div>
+    <h2 class="s-title reveal">Not a transcriber. A builder.</h2>
+    <p class="s-sub reveal">
+      There's a version of technical writing that waits for the spec, fills in the template,
+      and ships when engineering says go. That's not what I do.
+    </p>
+    <div class="what-grid">
+      <div class="what-card reveal">
+        <div class="what-num">[01]</div>
+        <div class="what-title">Full documentation ownership</div>
+        <p class="what-body">I owned the entire <a href="https://docs.dynatrace.com/docs/secure" target="_blank" rel="noopener noreferrer">Secure</a> section at Dynatrace from absolute zero – building the information architecture from scratch, maintaining dual coverage across a full platform redesign, and supporting 13 development teams as the sole embedded writer, with no migration model or established patterns. I don't wait to be handed content. I go get it.</p>
+        <div class="scope-label">// capabilities</div>
+        <div class="scope-tags">
+          <a href="https://docs.dynatrace.com/docs/secure/application-security/vulnerability-analytics" target="_blank" rel="noopener noreferrer" class="scope-tag">Runtime Vulnerability Analytics</a>
+          <a href="https://docs.dynatrace.com/docs/secure/application-security/application-protection" target="_blank" rel="noopener noreferrer" class="scope-tag">Runtime Application Protection</a>
+          <a href="https://docs.dynatrace.com/docs/secure/application-security/security-posture-management-hub" target="_blank" rel="noopener noreferrer" class="scope-tag">Security Posture Management</a>
+          <a href="https://docs.dynatrace.com/docs/secure/threat-observability" target="_blank" rel="noopener noreferrer" class="scope-tag">Threat Observability</a>
+        </div>
+        <div class="scope-label">// dynatrace apps</div>
+        <div class="scope-tags">
+          <a href="https://docs.dynatrace.com/docs/secure/investigations" target="_blank" rel="noopener noreferrer" class="scope-tag">Investigations</a>
+          <a href="https://docs.dynatrace.com/docs/secure/vulnerabilities" target="_blank" rel="noopener noreferrer" class="scope-tag">Vulnerabilities</a>
+          <a href="https://docs.dynatrace.com/docs/secure/threats-and-exploits" target="_blank" rel="noopener noreferrer" class="scope-tag">Threats &amp; Exploits</a>
+          <a href="https://docs.dynatrace.com/docs/shortlink/xspm" target="_blank" rel="noopener noreferrer" class="scope-tag">Security Posture Management app</a>
+        </div>
+        <div class="scope-label">// content types</div>
+        <div class="scope-tags">
+          <span class="scope-tag">Conceptual guides</span>
+          <span class="scope-tag">Feature guides</span>
+          <span class="scope-tag">Configuration workflows</span>
+          <span class="scope-tag">REST API docs</span>
+          <span class="scope-tag">Use cases</span>
+          <span class="scope-tag">Tutorials</span>
+          <span class="scope-tag">Troubleshooting</span>
+          <span class="scope-tag">Migration &amp; upgrade guides</span>
+          <span class="scope-tag">Changelogs</span>
+          <span class="scope-tag">Release notes</span>
+        </div>
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 1.25rem 0;">
+        <p style="font-size: .78rem; font-style: italic; color: var(--muted); line-height: 1.6;"><span style="color: var(--accent); opacity: .6;">"</span>As the AppSec team grew and scope expanded significantly, she maintained outstanding quality and performance.</p>
+        <p style="font-family: var(--mono); font-size: .68rem; color: var(--accent); margin-top: .4rem;">— Michael Frank</p>
+        <p style="font-family: var(--mono); font-size: .68rem; color: rgba(240,165,0,.55); margin-top: .1rem;">Engineering Team Lead, Dynatrace</p>
+      </div>
+
+      <div class="what-card reveal">
+        <div class="what-num">[02]</div>
+        <div class="what-title">Structure before writing</div>
+        <p class="what-body">Structure is decided before writing starts. Where content lives, how it handles platform divergence, which audience reads it first – these decisions determine whether documentation holds up as the product evolves. At Dynatrace, those decisions across the entire Secure documentation section were mine to make – sole writer, no established model.</p>
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 1.25rem 0;">
+        <p style="font-size: .78rem; font-style: italic; color: var(--muted); line-height: 1.6;"><span style="color: var(--accent); opacity: .6;">"</span>She redesigned parts of our documentation structure, introduced better processes to increase maintainability, and helped the team avoid duplicate work and long-term debt.</p>
+        <p style="font-family: var(--mono); font-size: .68rem; color: var(--accent); margin-top: .4rem;">— Richard Schobesberger</p>
+        <p style="font-family: var(--mono); font-size: .68rem; color: rgba(240,165,0,.55); margin-top: .1rem;">Senior Software Engineer, Dynatrace</p>
+      </div>
+
+      <div class="what-card reveal">
+        <div class="what-num">[03]</div>
+        <div class="what-title">Cross-functional partnership</div>
+        <p class="what-body">I work with software developers, engineers, architects, product managers, UX designers, GTM, and support teams as an active contributor throughout the full development cycle.</p>
+        <p class="what-body" style="margin-top: .75rem;">Being in the room from the start means the team doesn't need to brief me before shipping – I already have the context. Engineers and product managers spend that time on the product, not on documentation handoffs.</p>
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 1.25rem 0;">
+        <p style="font-size: .78rem; font-style: italic; color: var(--muted); line-height: 1.6;"><span style="color: var(--accent); opacity: .6;">"</span>I worked with Teo for about five years while I served as Product Owner. What stood out most was her curiosity and rigor: she consistently asked the right questions that exposed hidden problems and edge cases others missed. Teo clarified ambiguous areas quickly and made practical decisions when needed, helping the team avoid rework and deliver cleaner outcomes. She's an excellent partner for any product team that needs someone who uncovers the real issues and drives clarity.</p>
+        <p style="font-family: var(--mono); font-size: .68rem; color: var(--accent); margin-top: .4rem;">— Veit Frick</p>
+        <p style="font-family: var(--mono); font-size: .68rem; color: rgba(240,165,0,.55); margin-top: .1rem;">Team Engineering Lead, Dynatrace</p>
+      </div>
+
+      <div class="what-card reveal">
+        <div class="what-num">[04]</div>
+        <div class="what-title">Impact</div>
+        <p class="what-body">I test every feature I document in the dev environment. Where I find usability gaps, ambiguous error messages, or broken flows, I treat them as part of my job to fix. I review, refine, or rewrite in-product text during design and development.</p>
+        <div class="metric-list">
+          <div class="metric-item">
+            <details class="metric">
+              <summary>1st use case format</summary>
+              <p class="metric-detail">My <a href="https://docs.dynatrace.com/docs/shortlink/notification-automation" target="_blank" rel="noopener noreferrer">first use case</a> was adopted as the org-wide structural model, still in use today.</p>
+            </details>
+          </div>
+          <div class="metric-item">
+            <details class="metric">
+              <summary>1st metadata coverage</summary>
+              <p class="metric-detail">First to adopt full metadata coverage across the organization – documentation structure and tutorials recognized as a quality benchmark across the doc team.</p>
+            </details>
+          </div>
+          <div class="metric-item">
+            <details class="metric">
+              <summary>20 security use cases</summary>
+              <p class="metric-detail"><a href="https://docs.dynatrace.com/docs/secure/use-cases" target="_blank" rel="noopener noreferrer">20 security use cases</a> written – the most of any product area in Dynatrace, demonstrating real-world capability through scenario-based content.</p>
+            </details>
+          </div>
+          <div class="metric-item">
+            <details class="metric">
+              <summary>~90% acceptance rate</summary>
+              <p class="metric-detail">~90% acceptance rate on product defects and UI improvement submissions per quarter.</p>
+            </details>
+          </div>
+          <div class="metric-item">
+            <details class="metric">
+              <summary>100% on-time delivery</summary>
+              <p class="metric-detail">100% on-time delivery across 6+ years at Dynatrace, managing concurrent documentation requests from developers and product managers across multiple teams without a single missed deadline.</p>
+            </details>
+          </div>
+        </div>
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 1.25rem 0;">
+        <p style="font-size: .78rem; font-style: italic; color: var(--muted); line-height: 1.6;"><span style="color: var(--accent); opacity: .6;">"</span>She regularly brought forward suggestions rooted in real user journeys and use cases, and her instinct for clear, friendly language often translated into real product improvements.</p>
+        <p style="font-family: var(--mono); font-size: .68rem; color: var(--accent); margin-top: .4rem;">— Liisa Tallinn</p>
+        <p style="font-family: var(--mono); font-size: .68rem; color: rgba(240,165,0,.55); margin-top: .1rem;">Product Manager, Dynatrace</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CASE STUDIES ── -->
+<section id="work">
+  <div class="inner">
+    <div class="s-label reveal" data-n="02 ">cases</div>
+    <h2 class="s-title reveal">Selected work</h2>
+    <p class="s-sub reveal">Three projects with no template, no precedent, and no established path.</p>
+    <div class="case-grid">
+
+      <div class="case-card reveal">
+        <div class="case-n">case_01.md</div>
+        <h3 class="case-title">CSPM Notification Automation – Scenario-Based Tutorial</h3>
+        <span class="case-tag">First use-case format · Adopted org-wide</span>
+        <div style="margin-bottom: 1.25rem;">
+          <div class="case-clabel" style="color: var(--accent);">// challenge</div>
+          <p class="case-ctext">In 2023, there was no established use case format in Dynatrace documentation. The challenge was to create one from scratch that could bridge the gap between product features and real customer problems – demonstrating value through a concrete, scenario-based narrative rather than a feature description, for a technically demanding security audience.</p>
+        </div>
+        <div style="margin-bottom: 1.25rem;">
+          <div class="case-clabel" style="color: var(--accent);">// approach</div>
+          <p class="case-ctext">I chose a scenario-first structure, opening with a real operational problem: a security team receiving 400,000 daily AWS alerts uses Dynatrace to reduce that noise to a handful of actionable Jira tickets through automated filtering, enrichment, and routing. Before walking the reader through configuration, I included an explanation of how the mechanism works – so users understand the logic behind what they're setting up, not just the steps. The content then covers prerequisites, configuration steps, and a testing procedure – ending with the outcome of a successful setup.</p>
+        </div>
+        <div>
+          <div class="case-clabel" style="color: var(--accent);">// result</div>
+          <p class="case-ctext">My first use case became the org-wide structural model for use case documentation across Dynatrace.</p>
+        </div>
+        <div style="margin-top: 1.25rem; display: flex; justify-content: flex-end;">
+          <a href="https://docs.dynatrace.com/docs/shortlink/notification-automation" target="_blank" rel="noopener noreferrer" style="font-family: var(--mono); font-size: .75rem; color: var(--accent); text-decoration: none; letter-spacing: .02em;">View docs →</a>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-n">case_02.md</div>
+        <h3 class="case-title">Security Posture Management – Documentation Architecture</h3>
+        <span class="case-tag">Cross-functional · Built under ambiguity</span>
+        <div style="margin-bottom: 1.25rem;">
+          <div class="case-clabel" style="color: var(--accent);">// challenge</div>
+          <p class="case-ctext">Security Posture Management (SPM) arrived as a new capability introduced through the Runecast acquisition, with no prior documentation or established structure. Covering it required simultaneous coordination across different engineering and product teams in an environment where scope, priorities, and requirements kept evolving until release.</p>
+        </div>
+        <div style="margin-bottom: 1.25rem;">
+          <div class="case-clabel" style="color: var(--accent);">// approach</div>
+          <p class="case-ctext">I drove the entire documentation process: decided what and where needed to be documented, aligned cross-functional stakeholders across Kubernetes and AppSec SPM teams, proposed and iterated on the full documentation structure via PR, and coordinated the review cycle around the product's first release. I managed uncertainty by anchoring on what was known, prioritizing accordingly, and structuring the work to absorb last-minute changes. In parallel, I collaborated with developers and UX on in-product text, submitted bugs, and contributed improvement ideas before release.</p>
+        </div>
+        <div>
+          <div class="case-clabel" style="color: var(--accent);">// result</div>
+          <p class="case-ctext">A complete SPM documentation set delivered from scratch in one and a half months, on top of regular commitments – on time, without compromising quality. This included the <a href="https://docs.dynatrace.com/docs/shortlink/spm-hub" target="_blank" rel="noopener noreferrer">SPM capability</a> (with a comprehensive <a href="https://docs.dynatrace.com/docs/shortlink/spm-hub#faq" target="_blank" rel="noopener noreferrer">FAQ</a>), the <a href="https://docs.dynatrace.com/docs/shortlink/guides-spm" target="_blank" rel="noopener noreferrer">KSPM setup and configuration</a>, the <a href="https://docs.dynatrace.com/docs/shortlink/xspm" target="_blank" rel="noopener noreferrer">Security Posture Management app</a>, and a <a href="https://docs.dynatrace.com/docs/shortlink/spm-stay-compliant" target="_blank" rel="noopener noreferrer">use case tutorial</a> to demonstrate the capability's value through a practical, scenario-based experience.</p>
+        </div>
+        <div style="margin-top: 1.25rem; display: flex; justify-content: flex-end;">
+          <a href="https://docs.dynatrace.com/docs/shortlink/spm-hub" target="_blank" rel="noopener noreferrer" style="font-family: var(--mono); font-size: .75rem; color: var(--accent); text-decoration: none; letter-spacing: .02em;">View docs →</a>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-n">case_03.md</div>
+        <h3 class="case-title">Security FAQ – Multi-Platform Troubleshooting</h3>
+        <span class="case-tag">Three audiences · Single source</span>
+        <div style="margin-bottom: 1.25rem;">
+          <div class="case-clabel" style="color: var(--accent);">// challenge</div>
+          <p class="case-ctext">The Application Security FAQ is a comprehensive troubleshooting and guidance page covering all Security topics. It was meant to serve three distinct audiences simultaneously: customers on the latest Dynatrace platform, customers on the classic platform, and Managed customers – who ran on classic only. Troubleshooting steps and fixes often differed significantly between platforms, and in many cases entire topic areas applied exclusively to one or the other. A poorly structured FAQ risked overwhelming customers with content that didn't apply to them.</p>
+        </div>
+        <div style="margin-bottom: 1.25rem;">
+          <div class="case-clabel" style="color: var(--accent);">// approach</div>
+          <p class="case-ctext">I built the FAQ from scratch and continuously improved it using real customer pain points identified through Zendesk support data. Rather than maintaining separate versions or cluttering the page with repeated caveats, I handled platform distinctions internally using conditional scripts and content placeholders – allowing the page to serve all three audiences from a single source.</p>
+        </div>
+        <div>
+          <div class="case-clabel" style="color: var(--accent);">// result</div>
+          <p class="case-ctext">A structured, navigable FAQ covering ~50 questions across topics including detection, monitoring, configuration, attack blocking, data retention, consumption, and licensing. Improvements led to a measurable quarter-over-quarter reduction in related customer tickets.</p>
+        </div>
+        <div style="margin-top: 1.25rem; display: flex; justify-content: flex-end;">
+          <a href="https://docs.dynatrace.com/docs/secure/faq" target="_blank" rel="noopener noreferrer" style="font-family: var(--mono); font-size: .75rem; color: var(--accent); text-decoration: none; letter-spacing: .02em;">View docs →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section id="process">
+  <div class="inner">
+    <div class="s-label reveal" data-n="03 ">process</div>
+    <h2 class="s-title reveal">Documentation philosophy</h2>
+    <p class="s-sub reveal">Documentation principles aren't found in style guides. They emerge from taking product quality personally.</p>
+    <div class="process-grid">
+
+      <div class="process-item reveal">
+        <div class="process-n">01.</div>
+        <div>
+          <div class="process-title">Documentation as part of the product</div>
+          <p class="process-body">I think of documentation as part of the product, not a byproduct of it. My goal is to make complexity feel navigable – to write for the user who is frustrated, in a hurry, or seeing a concept for the first time.</p>
+        </div>
+      </div>
+
+      <div class="process-item reveal">
+        <div class="process-n">02.</div>
+        <div>
+          <div class="process-title">Early involvement</div>
+          <p class="process-body">I join projects at the design and development stages. The earlier I'm involved, the better for everyone. I ask the right questions when changes are still easy to make, so gaps don't surface in production.</p>
+        </div>
+      </div>
+
+      <div class="process-item reveal">
+        <div class="process-n">03.</div>
+        <div>
+          <div class="process-title">Docs-as-code</div>
+          <p class="process-body">Markdown, Git, pull requests, CI pipelines. Documentation managed like code doesn't drift from the product it describes – it gets reviewed, versioned, and shipped with the same rigor as any production artifact.</p>
+        </div>
+      </div>
+
+      <div class="process-item reveal">
+        <div class="process-n">04.</div>
+        <div>
+          <div class="process-title">AI tools, thoughtfully applied</div>
+          <p class="process-body">I use AI tools to synthesize complex technical inputs, accelerate drafting, speed up repetitive tasks, and maintain consistency across large documentation sets. AI accelerates the work. Domain expertise determines what survives the edit.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── TOOLS ── -->
+<section id="tools">
+  <div class="inner">
+    <div class="s-label reveal" data-n="04 ">tools</div>
+    <h2 class="s-title reveal">Stack</h2>
+    <p class="s-sub reveal">What's in my actual workflow.</p>
+    <div class="tools-wrap reveal">
+
+      <div class="tool-group">
+        <div class="tool-group-label">content authoring</div>
+        <div class="tool-tags">
+          <span class="tool-tag">Markdown</span>
+          <span class="tool-tag">Confluence</span>
+          <span class="tool-tag">Grammarly</span>
+          <span class="tool-tag">GitHub Copilot</span>
+          <span class="tool-tag">Microsoft Copilot</span>
+          <span class="tool-tag">Claude / Claude Code</span>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <div class="tool-group-label">version control</div>
+        <div class="tool-tags">
+          <span class="tool-tag">Git</span>
+          <span class="tool-tag">Bitbucket</span>
+          <span class="tool-tag">GitHub</span>
+          <span class="tool-tag">VS Code</span>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <div class="tool-group-label">issue tracking &amp; analytics</div>
+        <div class="tool-tags">
+          <span class="tool-tag">Jira</span>
+          <span class="tool-tag">Zendesk</span>
+          <span class="tool-tag">Google Analytics (GA4)</span>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <div class="tool-group-label">collaboration &amp; design</div>
+        <div class="tool-tags">
+          <span class="tool-tag">Figma</span>
+          <span class="tool-tag">Miro</span>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <div class="tool-group-label">visual capture</div>
+        <div class="tool-tags">
+          <span class="tool-tag">Snagit</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── VOICES ── -->
+<section id="recs">
+  <div class="inner">
+    <div class="s-label reveal" data-n="05 ">voices</div>
+    <h2 class="s-title reveal">What others say</h2>
+    <p class="s-sub reveal">From stakeholders who worked with me directly.</p>
+    <div class="rec-grid">
+
+      <div class="rec-card reveal">
+        <span class="rec-q">"</span>
+        <p class="rec-text">Teo has outstanding expertise in technical writing and has been a privilege to work with. She is sharp, thorough and fully invested in the quality of everything she delivers. She is very technical and has in-depth product knowledge combined with a high level of adaptability, which has been essential in a fast-paced and rapidly growing technical area. During her tenure at AppSec the team grew immensely, which included a sizable acquisition. Teo was able to stay highly efficient and maintain excellent performance as her scope scaled. I can highly recommend Teo as a valuable addition to any organization.</p>
+        <div class="rec-divider"></div>
+        <div class="rec-name" style="color: var(--accent);">Stanimir Markov</div>
+        <div class="rec-role">Principal Product Manager – Security, Dynatrace (direct manager)</div>
+      </div>
+
+      <div class="rec-card reveal">
+        <span class="rec-q">"</span>
+        <p class="rec-text">Teo is an outstanding technical writer: she produces clear, accurate, and usable documentation that genuinely helps customers and internal teams. She made sure the documentation matched the product experience by partnering with UX on product wording and with product managers to structure and write docs for new features. Her collaboration with engineering teams was excellent – she synchronized her work with the dev cycle so documentation was available when it mattered, not after the fact. Being the sole technical writer for AppSec could easily have been a bottleneck, but Teo tackled that proactively: she redesigned parts of our documentation structure, introduced better processes to increase maintainability, and helped the team avoid duplicate work and long-term debt. With the rise of AI she set up skills and workflows to speed up drafting and to keep in-product wording and documentation consistent across the organization – always with good judgment and a focus on quality.</p>
+        <div class="rec-divider"></div>
+        <div class="rec-name" style="color: var(--accent);">Richard Schobesberger</div>
+        <div class="rec-role">Senior Software Engineer, Dynatrace</div>
+      </div>
+
+      <div class="rec-card reveal">
+        <span class="rec-q">"</span>
+        <p class="rec-text">Teo is far more than a standard Technical Writer, she was our team's "Guardian of the Docs". She goes above and beyond writing by actively ensuring that users truly understand the product. By working directly with our dev teams, she naturally performed implicit QA, providing crucial feedback that improved both our documentation and the product itself. She is a massive asset to any engineering or product organization.</p>
+        <div class="rec-divider"></div>
+        <div class="rec-name" style="color: var(--accent);">Matthias Meisinger</div>
+        <div class="rec-role">Engineering Leadership &amp; Org Change, Dynatrace</div>
+      </div>
+
+      <div class="rec-card reveal">
+        <span class="rec-q">"</span>
+        <p class="rec-text">She showed an exceptional ability to immerse herself in complex technical topics, quickly build deep understanding, and turn that knowledge into clear, thoughtful, and genuinely useful content. She is highly reliable, incredibly thoughtful, and brings a strong sense of ownership to everything she does. What made her stand out even more was the way she contributed far beyond her official role. She regularly brought valuable ideas for improving the product and user experience, spotted gaps early, and offered insights that helped teams make better decisions. She has a natural ability to see both the technical details and the bigger picture, always with the user in mind.</p>
+        <div class="rec-divider"></div>
+        <div class="rec-name" style="color: var(--accent);">Gerhard Byrne</div>
+        <div class="rec-role">Principal Product Manager – Security, Dynatrace</div>
+      </div>
+
+      <div class="rec-card reveal">
+        <span class="rec-q">"</span>
+        <p class="rec-text">I've worked with many technical writers across both product and customer-facing teams, and Teo stands out as one of the absolute best. What sets her apart is her user-first approach: she doesn't just document features or repeat what a tooltip says. Instead, she deeply investigates the core questions and friction points users face, and writes documentation that genuinely solves problems. Throughout our time working together, Teo felt like a true, integrated extension of our team. Her collaborative mindset and dedication to quality made her an incredible partner, and I cannot recommend her highly enough.</p>
+        <div class="rec-divider"></div>
+        <div class="rec-name" style="color: var(--accent);">Susan St. Clair</div>
+        <div class="rec-role">Strategic Product Leader, Dynatrace</div>
+      </div>
+
+      <div class="rec-card reveal">
+        <span class="rec-q">"</span>
+        <p class="rec-text">Teo excels as a technical writer way beyond just documentation and user guidance. She actively searches for ways to make the product better, incorporating sources I never even considered. One example was that she went through all the support interactions and extracted what needed to be improved, on the documentation and on support training material. She is also very well organized and delivers huge value on time. It was a great pleasure to work with her and she is easily the best technical writer I've met in the last 20 years.</p>
+        <div class="rec-divider"></div>
+        <div class="rec-name" style="color: var(--accent);">David Füreder</div>
+        <div class="rec-role">Senior Product Architect, Dynatrace</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="s-label reveal" data-n="06 ">contact</div>
+    <h2 class="contact-h reveal">
+      Got complex systems that need <span>clear documentation?</span>
+    </h2>
+    <p class="contact-sub reveal">
+      Open to senior technical writing roles in any complex technical domain – hybrid in CZ, RO, AT or remote across Europe.
+    </p>
+    <div class="contact-links reveal">
+      <a href="mailto:teodora.moldovanu@yahoo.com" class="c-link primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+        teodora.moldovanu@yahoo.com
+      </a>
+      <a href="https://www.linkedin.com/in/teo-moldovanu" class="c-link" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/teokitten" class="c-link" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        GitHub
+      </a>
+    </div>
+    <footer>
+      <p>Built and designed by <a href="https://www.linkedin.com/in/teo-moldovanu" target="_blank" rel="noopener noreferrer">Teo Moldovanu</a> · © 2026</p>
+    </footer>
+  </div>
+</section>
+
+<script>
+  /* mobile nav */
+  function toggleNav() { document.getElementById('mobNav').classList.toggle('open'); }
+  function closeNav()  { document.getElementById('mobNav').classList.remove('open'); }
+
+  /* active nav link on scroll */
+  const sections  = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-links a[href^="#"]');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, { rootMargin: '-35% 0px -65% 0px' });
+  sections.forEach(s => navObs.observe(s));
+
+  /* reveal on scroll */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>
